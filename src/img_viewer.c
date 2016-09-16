@@ -70,16 +70,35 @@ void process_input()
                 ctx.x_mouse_this = event.motion.x;
                 ctx.y_mouse_this = event.motion.y;
                 break;
+            case SDL_FINGERMOTION:
+                ctx.x_mouse_this = event.tfinger.x * ctx.canvas_w;
+                ctx.y_mouse_this = event.tfinger.y * ctx.canvas_h;
+                break;
             case SDL_MOUSEWHEEL:
                 if (event.wheel.y > 0)
                     ctx.active_state |= STATE_ZOOM_IN;
                 if (event.wheel.y < 0)
                     ctx.active_state |= STATE_ZOOM_OUT;
                 break;
+            case SDL_MULTIGESTURE:
+                if (fabs(event.mgesture.dDist) > 0.002)
+                {
+                    if (event.mgesture.dDist > 0)
+                        ctx.active_state |= STATE_ZOOM_IN;
+                    else if (event.mgesture.dDist < 0)
+                        ctx.active_state |= STATE_ZOOM_OUT;
+                }
+                break;
             case SDL_MOUSEBUTTONDOWN:
                 ctx.active_state |= STATE_PAN;
                 break;
+            case SDL_FINGERDOWN:
+                ctx.active_state |= STATE_PAN;
+                ctx.x_mouse_last = ctx.x_mouse_this = event.tfinger.x * ctx.canvas_w;
+                ctx.y_mouse_last = ctx.y_mouse_this = event.tfinger.y * ctx.canvas_h;
+                break;
             case SDL_MOUSEBUTTONUP:
+            case SDL_FINGERUP:
                 ctx.active_state &= ~STATE_PAN;
                 break;
         }

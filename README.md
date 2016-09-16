@@ -21,4 +21,5 @@ Usage Instructions
 
 * `viewer.fullScreen()` makes the `ImgViewer`, `viewer`, full screen
 
-An example of usage is in eg/newsham_park
+An example of usage is in eg/newsham_park, a live example can be found
+[here](http://lyceum-allotments.github.io/pages/newsham_park/newsham_park.html)
