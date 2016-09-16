@@ -291,12 +291,15 @@ void setup_context(int w, int h)
 // loads the image data pointed to by 'image_data' (of size 'size' bytes)
 void load_image(void *image_data, int size)
 {
-    SDL_RWops *a = SDL_RWFromConstMem(image_data, size);
-    ctx.image = IMG_Load_RW(a, 1);
-
     // if there is an existing texture we need to free it's memory
     if (ctx.img_tex)
+    {
         SDL_DestroyTexture(ctx.img_tex);
+        SDL_FreeSurface(ctx.image);
+    }
+
+    SDL_RWops *a = SDL_RWFromConstMem(image_data, size);
+    ctx.image = IMG_Load_RW(a, 1);
 
     ctx.img_tex = SDL_CreateTextureFromSurface(ctx.renderer, ctx.image);
     ctx.dest.w = ctx.image->w;
